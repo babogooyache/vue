@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
-    <HelloWorld/>
+    <!--<HelloWorld/>-->
+    <router-view></router-view>
+    <!-- 透過router 來呈現內容 -->
   </div>
 </template>
 
