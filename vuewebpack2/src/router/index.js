@@ -4,7 +4,10 @@ import VueRouter from 'vue-router';
 
 //自訂的分頁元件
 import Home from "@/components/HelloWorld";
-import Page from  '@/components/pages/page';
+import Page from "@/components/pages/page";
+import Child from "@/components/pages/child";
+import Child2 from "@/components/pages/child2";
+import Child3 from  '@/components/pages/child3';
 
 
 Vue.use(VueRouter);
@@ -17,9 +20,31 @@ export default new VueRouter({
       component: Home //對應的元件
     },
     {
-      name: "Page", 
-      path: "/page", 
-      component: Page 
+      name: "Page",
+      path: "/page",
+      component: Page,
+      children: [
+        {
+          name: "card",
+          path: "",  //預設是child1
+          component: Child
+        },
+        // {
+        //   name: "card",
+        //   path: "child1",
+        //   component: Child
+        // },
+        {
+          name: "card2",
+          path: "child2",
+          component: Child2
+        },
+        {
+          name: "card3",
+          path: "child3",
+          component: Child3
+        }
+      ]
     }
   ]
 });
