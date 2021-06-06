@@ -26,14 +26,9 @@ export default new VueRouter({
       children: [
         {
           name: "card",
-          path: "",  //預設是child1
+          path: "", //預設是child1
           component: Child
         },
-        // {
-        //   name: "card",
-        //   path: "child1",
-        //   component: Child
-        // },
         {
           name: "card2",
           path: "child2",
@@ -41,7 +36,7 @@ export default new VueRouter({
         },
         {
           name: "card3",
-          path: "child3",
+          path: "child/:id", //後面的id等於動態路由
           component: Child3
         }
       ]

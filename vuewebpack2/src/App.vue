@@ -32,11 +32,11 @@ export default {
   components: {
     HelloWorld
   },
-  created() {
-    this.axios.get("https://randomuser.me/api/").then(response => {
-      console.log(response.data);
-    });
-  }
+  // created() {
+  //   this.axios.get("https://randomuser.me/api/").then(response => {
+  //     console.log(response.data);
+  //   });
+  // }
 };
 </script>
 
