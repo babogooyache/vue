@@ -27,7 +27,8 @@ export default new VueRouter({
         {
           name: "card",
           path: "", //預設是child1
-          component: Child
+          component: Child, 
+          alias: 'child1' 
         },
         {
           name: "card2",
