@@ -19,8 +19,8 @@ export default {
   created() {
     //讀取動態路由的方式
     // console.log(this.$route.params.id);
-    const id = this.$route.params.id;
-    this.$http.get(`https://randomuser.me/api/?seed=${id}`)
+    // const id = this.$route.params.id;
+    this.$http.get(`https://randomuser.me/api/`)
       .then((result) => {
         console.log(result);
       }

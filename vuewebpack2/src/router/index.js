@@ -7,7 +7,8 @@ import Home from "@/components/HelloWorld";
 import Page from "@/components/pages/page";
 import Child from "@/components/pages/child";
 import Child2 from "@/components/pages/child2";
-import Child3 from  '@/components/pages/child3';
+import Child3 from '@/components/pages/child3';
+import Menu from  '@/components/pages/menu';
 
 
 Vue.use(VueRouter);
@@ -20,13 +21,19 @@ export default new VueRouter({
       component: Home //對應的元件
     },
     {
-      name: "Page",
+      // name: "Page",
       path: "/page",
-      component: Page,
+      // component: Page,
+      components: {   //components 可以載入多個元件的
+        default: Page,  // default 屬性來載入路由路徑對應的預設組件
+        menu: Menu 
+      },
       children: [
         {
           name: "card",
-          path: "", //預設是child1
+          path: "", //預設是child1，
+          //當沒有設定路徑的時候，就是指定上層部份預設指向目， 要把 name: "Page",註解掉。
+
           component: Child, 
           alias: 'child1' 
         },
@@ -37,7 +44,7 @@ export default new VueRouter({
         },
         {
           name: "card3",
-          path: "child/:id", //後面的id等於動態路由
+          path: "child3", //後面的id等於動態路由
           component: Child3
         }
       ]
