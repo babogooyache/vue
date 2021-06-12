@@ -14,6 +14,9 @@ import Menu from  '@/components/pages/menu';
 Vue.use(VueRouter);
 
 export default new VueRouter({
+  // mode:'history',
+  linkActiveClass:'is-active',
+  linkExactActiveClass:'is-ExactActive',
   routes: [
     {
       name: "index", //元件呈現的名稱
