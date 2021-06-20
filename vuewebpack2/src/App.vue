@@ -13,11 +13,14 @@ export default {
   components: {
     HelloWorld
   },
-  // created() {
-  //   this.axios.get("https://randomuser.me/api/").then(response => {
-  //     console.log(response.data);
-  //   });
-  // }
+  created() {
+    // const api = 'https://vue-course-api.hexschool.io/api/babogoo/products';
+    const api = `${process.env.API_PATH}/api/${process.env.CUSTOM_NAME}/products`;
+    this.axios.get(api).then(response => {
+      console.log(response.data);
+      // console.log(process.env.API_PATH);
+    });
+  }
 };
 </script>
 
