@@ -2,6 +2,10 @@
   <div id="app">
     <HelloWorld></HelloWorld>
 
+    <button type="button" class="btn btn-primary">Primary</button>
+<button type="button" class="btn btn-secondary">Secondary</button>
+<button type="button" class="btn btn-success">Success</button>
+
   </div>
 </template>
 
@@ -25,9 +29,10 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~bootstrap/scss/bootstrap";
+@import "./assets/all.scss";
 </style>
-<style>
+
+<style scoped>
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
