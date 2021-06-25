@@ -8,8 +8,11 @@ import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 Vue.use(VueAxios, axios)
+axios.defaults.withCredentials = true;
+
 
 Vue.config.productionTip = false
+
 
 /* eslint-disable no-new */
 new Vue({

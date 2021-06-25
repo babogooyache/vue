@@ -1,29 +1,30 @@
 <template>
   <div id="app">
-    <HelloWorld></HelloWorld>
-
-    <button type="button" class="btn btn-primary">Primary</button>
-<button type="button" class="btn btn-secondary">Secondary</button>
-<button type="button" class="btn btn-success">Success</button>
-
+    <router-view/>
+    <a href="#" @click.prevent="signout()">signout</a> 
   </div>
 </template>
-
 <script>
-import HelloWorld from "./components/HelloWorld";
-
 export default {
-  name: "App",
-  components: {
-    HelloWorld
-  },
   created() {
     // const api = 'https://vue-course-api.hexschool.io/api/babogoo/products';
     const api = `${process.env.API_PATH}/api/${process.env.CUSTOM_NAME}/products`;
     this.axios.get(api).then(response => {
-      console.log(response.data);
+      // console.log(response.data);
       // console.log(process.env.API_PATH);
     });
+  },
+  methods: {
+    signout(){
+      const api = `${process.env.API_PATH}/logout`;
+      const vm = this;
+      this.$http.post(api).then(response => {
+        console.log(response.data);
+        if (response.data.success) {
+          vm.$router.push('/login');
+        }
+      });
+    }
   }
 };
 </script>
