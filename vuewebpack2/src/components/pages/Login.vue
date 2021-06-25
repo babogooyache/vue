@@ -52,13 +52,16 @@ export default {
       this.$http.post(api, vm.user).then(response => {
         const token = response.data.token;
         const expired = response.data.expired;
-        console.log(token,expired);
-        document.cookie = `hexToken=${token}; expires=${new Date(expired)};`;
+        // console.log(token,expired);
+        //把cookie帶出來的方式
+        // document.cookie = "someCookieName=true; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+        document.cookie = `hexToken=${token};
+          expires=${new Date(expired)};`;
       
         // console.log(response.data);
-        // if (response.data.success) {
-        //   vm.$router.push('/');
-        // }
+        if (response.data.success) {
+          vm.$router.push('/');
+        }
 
       });
     }
