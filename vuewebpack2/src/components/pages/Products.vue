@@ -173,7 +173,8 @@ export default {
       $("#productModal").modal("show");
     },
     updateProduct() {
-      const api = `${process.env.API_PATH}/api/${process.env.CUSTOM_NAME}/admin/products?page=:page`;
+      const api = `${process.env.API_PATH}/api/${process.env.CUSTOM_NAME}/admin/products`;
+      // const api = `${process.env.API_PATH}/api/${process.env.CUSTOM_NAME}/admin/products?page=:page`;
       const vm = this;
       //{data:vm.tempProduct} 本身是一個物件，且被data包住
       this.axios.post(api, {data:vm.tempProduct}).then(response => {
