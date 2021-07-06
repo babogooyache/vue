@@ -13,11 +13,11 @@
       <thead>
         <tr>
           <th width="120">分類</th>
-          <th>名稱</th>
+          <th width="200">名稱</th>
           <th width="120">原價</th>
           <th width="120">售價</th>
-          <th width="120">啟用</th>
-          <th width="120">編輯</th>
+          <th width="100">啟用</th>
+          <th width="100">編輯</th>
         </tr>
       </thead>
       <tbody>
@@ -173,7 +173,7 @@ export default {
       $("#productModal").modal("show");
     },
     updateProduct() {
-      const api = `${process.env.API_PATH}/api/${process.env.CUSTOM_NAME}/admin/products`;
+      const api = `${process.env.API_PATH}/api/${process.env.CUSTOM_NAME}/admin/product`;
       // const api = `${process.env.API_PATH}/api/${process.env.CUSTOM_NAME}/admin/products?page=:page`;
       const vm = this;
       //{data:vm.tempProduct} 本身是一個物件，且被data包住
