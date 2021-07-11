@@ -255,7 +255,7 @@
               type="button"
               class="btn btn-primary"
               data-dismiss="modal"
-              @click="deleProduct()"
+              @click="deleteProduct()"
             >
               確定
             </button>
@@ -330,8 +330,8 @@ export default {
       $("#messageModal").modal("show");
     },
 
-    // deleProduct(item) {
-    deleProduct() {
+    // deleteProduct(item) {
+    deleteProduct() {
       const vm = this;
       let api = `${process.env.API_PATH}/api/${process.env.CUSTOM_NAME}/admin/product/${vm.tempProduct.id}`;
 
