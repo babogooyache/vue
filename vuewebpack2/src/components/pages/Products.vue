@@ -39,12 +39,19 @@
             >
               編輯
             </button>
+
+            <button
+              class="btn btn-outline-primary btn-sm"
+              @click="deleProduct(item.id)"
+            >
+              刪除
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
 
-    <!-- Modal -->
+    <!-- productModal -->
     <div
       class="modal fade"
       id="productModal"
@@ -216,6 +223,45 @@
         </div>
       </div>
     </div>
+    
+    <!-- messageModal -->
+    <div class="modal" id="messageModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">提示</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p v-html="modalMessage"></p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              取消
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-dismiss="modal"
+            >
+              確定
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -227,6 +273,7 @@ export default {
       products: [],
       tempProduct: {},
       isNew: false,
+      modalMessage:'',
     };
   },
   created() {
@@ -254,11 +301,12 @@ export default {
     },
     updateProduct() {
       let api = `${process.env.API_PATH}/api/${process.env.CUSTOM_NAME}/admin/product`;
-      let httpMethod = 'post';
+      let httpMethod = "post";
       const vm = this;
-      if (!this.isNew) {  //if modify
+      if (!this.isNew) {
+        //if modify
         api = `${process.env.API_PATH}/api/${process.env.CUSTOM_NAME}/admin/product/${vm.tempProduct.id}`;
-        httpMethod = 'put';
+        httpMethod = "put";
       }
       //{data:vm.tempProduct} 本身是一個物件，且被data包住
       this.axios[httpMethod](api, { data: vm.tempProduct }).then((response) => {
@@ -271,7 +319,27 @@ export default {
           vm.getProducts();
           console.log("add  failed");
         }
-        // vm.products = response.data.products;
+      });
+    },
+
+    openMessageModal(){
+      $("#messageModal").modal("show");
+    },
+
+    deleProduct(id) {
+      let api = `${process.env.API_PATH}/api/${process.env.CUSTOM_NAME}/admin/product/${id}`;
+      const vm = this;
+
+      this.axios.delete(api, { data: vm.tempProduct }).then((response) => {
+        console.log(response.data);
+        if (response.data.success) {
+         $("#messageModal").modal('show');
+         this.modalMessage = '已成功刪除該產品';
+          vm.getProducts();
+        } else {
+          vm.getProducts();
+        //  console.log("add  failed");
+        }
       });
     },
   },
