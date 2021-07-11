@@ -42,7 +42,7 @@
 
             <button
               class="btn btn-outline-primary btn-sm"
-              @click="deleProduct(item.id)"
+              @click="openMessageModal(item)"
             >
               刪除
             </button>
@@ -255,6 +255,7 @@
               type="button"
               class="btn btn-primary"
               data-dismiss="modal"
+              @click="deleProduct()"
             >
               確定
             </button>
@@ -300,9 +301,10 @@ export default {
       $("#productModal").modal("show");
     },
     updateProduct() {
+      const vm = this;
       let api = `${process.env.API_PATH}/api/${process.env.CUSTOM_NAME}/admin/product`;
       let httpMethod = "post";
-      const vm = this;
+      
       if (!this.isNew) {
         //if modify
         api = `${process.env.API_PATH}/api/${process.env.CUSTOM_NAME}/admin/product/${vm.tempProduct.id}`;
@@ -322,23 +324,24 @@ export default {
       });
     },
 
-    openMessageModal(){
+    openMessageModal(item){
+      this.tempProduct =item; 
+      this.modalMessage = '是否刪除該產品，無法回復';
       $("#messageModal").modal("show");
     },
 
-    deleProduct(id) {
-      let api = `${process.env.API_PATH}/api/${process.env.CUSTOM_NAME}/admin/product/${id}`;
+    // deleProduct(item) {
+    deleProduct() {
       const vm = this;
+      let api = `${process.env.API_PATH}/api/${process.env.CUSTOM_NAME}/admin/product/${vm.tempProduct.id}`;
 
       this.axios.delete(api, { data: vm.tempProduct }).then((response) => {
         console.log(response.data);
         if (response.data.success) {
-         $("#messageModal").modal('show');
-         this.modalMessage = '已成功刪除該產品';
+         
           vm.getProducts();
         } else {
           vm.getProducts();
-        //  console.log("add  failed");
         }
       });
     },
