@@ -98,6 +98,7 @@
                     id="customFile"
                     class="form-control"
                     ref="files"
+                    @change="uploadFile()"
                   />
                 </div>
                 <img
@@ -329,8 +330,6 @@ export default {
       this.modalMessage = '是否刪除該產品，無法回復';
       $("#messageModal").modal("show");
     },
-
-    // deleteProduct(item) {
     deleteProduct() {
       const vm = this;
       let api = `${process.env.API_PATH}/api/${process.env.CUSTOM_NAME}/admin/product/${vm.tempProduct.id}`;
@@ -345,6 +344,28 @@ export default {
         }
       });
     },
+    
+    uploadFile(){
+      //console.log(this);
+      const uploadedFile = this.$refs.files.files[0]; //把檔案取出
+      const vm = this;
+      const formData = new FormData(); //建立formData的物件
+      formData.append('file-to-upload', uploadedFile);
+      const url = `${process.env.API_PATH}/api/${process.env.CUSTOM_NAME}/admin/upload`;
+      this.$http.post(url , formData , {
+        Headers: {
+          'Content-Type' : 'multipart/form-data'
+        }
+      }).then((response) => {
+        console.log(response.data);
+        if (response.data.success) {
+          // vm.tempProduct.imageUrl = response.data.imageUrl;
+          // console.log(vm.tempProduct);
+          vm.$set(vm.tempProduct , 'imageUrl',response.data.imageUrl);
+        } 
+      });
+    },
+
   },
 };
 </script>
