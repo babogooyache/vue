@@ -1,5 +1,6 @@
 <template>
   <div>
+    <loading :active="isLoading" />
     <div class="text-right">
       <button
         class="btn btn-primary"
@@ -91,7 +92,7 @@
                 <div class="form-group">
                   <label for="customFile">
                     或 上傳圖片
-                    <i class="fas fa-spinner fa-spin"></i>
+                    <i class="fas fa-spinner fa-spin" v-if="status.fileUploading"></i>
                   </label>
                   <input
                     type="file"
@@ -276,6 +277,10 @@ export default {
       tempProduct: {},
       isNew: false,
       modalMessage:'',
+      isLoading: false,
+      status: {
+        fileUploading: false,
+      },
     };
   },
   created() {
@@ -285,8 +290,10 @@ export default {
     getProducts() {
       const api = `${process.env.API_PATH}/api/${process.env.CUSTOM_NAME}/products`;
       const vm = this;
+      vm.isLoading = true;
       this.axios.get(api).then((response) => {
         console.log(response.data);
+        vm.isLoading = false;
         vm.products = response.data.products;
       });
     },
@@ -352,12 +359,14 @@ export default {
       const formData = new FormData(); //建立formData的物件
       formData.append('file-to-upload', uploadedFile);
       const url = `${process.env.API_PATH}/api/${process.env.CUSTOM_NAME}/admin/upload`;
+      vm.status.fileUploading = true;
       this.$http.post(url , formData , {
         Headers: {
           'Content-Type' : 'multipart/form-data'
         }
       }).then((response) => {
         console.log(response.data);
+        vm.status.fileUploading = false;
         if (response.data.success) {
           // vm.tempProduct.imageUrl = response.data.imageUrl;
           // console.log(vm.tempProduct);
