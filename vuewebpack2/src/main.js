@@ -5,6 +5,8 @@ import App from './App'
 import router from './router'
 import 'bootstrap'
 
+import './bus';
+
 //axios
 import axios from 'axios'
 import VueAxios from 'vue-axios'

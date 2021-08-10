@@ -285,6 +285,7 @@ export default {
   },
   created() {
     this.getProducts();
+    
   },
   methods: {
     getProducts() {
@@ -371,7 +372,9 @@ export default {
           // vm.tempProduct.imageUrl = response.data.imageUrl;
           // console.log(vm.tempProduct);
           vm.$set(vm.tempProduct , 'imageUrl',response.data.imageUrl);
-        } 
+        } else {
+          this.$bus.$emit('message:push',response.data.message, 'danger');
+        }
       });
     },
 
