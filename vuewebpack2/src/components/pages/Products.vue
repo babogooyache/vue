@@ -52,6 +52,37 @@
       </tbody>
     </table>
 
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item" :class="{ disabled: !pagination.has_pre }">
+          <a class="page-link" href="#" aria-label="Previous"
+            @click.prevent="getProducts(pagination.current_page  -1)"
+            >
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+          </a>
+        </li>
+        <li
+          class="page-item"
+          v-for="page in pagination.total_pages"
+          :key="page"
+          :class="{ active: pagination.current_page === page }"
+        >
+          <a class="page-link" href="#" 
+            @click.prevent="getProducts(page)">{{
+            page
+          }}</a>
+        </li>
+        <li class="page-item" :class="{ disabled: !pagination.has_next }">
+          <a class="page-link" href="#" aria-label="Next"
+            @click.prevent="getProducts(pagination.current_page  +1)">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Next</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
     <!-- productModal -->
     <div
       class="modal fade"
@@ -92,7 +123,10 @@
                 <div class="form-group">
                   <label for="customFile">
                     或 上傳圖片
-                    <i class="fas fa-spinner fa-spin" v-if="status.fileUploading"></i>
+                    <i
+                      class="fas fa-spinner fa-spin"
+                      v-if="status.fileUploading"
+                    ></i>
                   </label>
                   <input
                     type="file"
@@ -225,7 +259,7 @@
         </div>
       </div>
     </div>
-    
+
     <!-- messageModal -->
     <div class="modal" id="messageModal" tabindex="-1">
       <div class="modal-dialog">
@@ -275,8 +309,9 @@ export default {
     return {
       products: [],
       tempProduct: {},
+      pagination: {},
       isNew: false,
-      modalMessage:'',
+      modalMessage: "",
       isLoading: false,
       status: {
         fileUploading: false,
@@ -285,17 +320,18 @@ export default {
   },
   created() {
     this.getProducts();
-    
   },
   methods: {
-    getProducts() {
-      const api = `${process.env.API_PATH}/api/${process.env.CUSTOM_NAME}/products`;
+    getProducts(page = 1) {
+      const api = `${process.env.API_PATH}/api/${process.env.CUSTOM_NAME}
+        /products?page=${page}`;
       const vm = this;
       vm.isLoading = true;
       this.axios.get(api).then((response) => {
         console.log(response.data);
         vm.isLoading = false;
         vm.products = response.data.products;
+        vm.pagination = response.data.pagination;
       });
     },
     //add or modify
@@ -309,11 +345,12 @@ export default {
       }
       $("#productModal").modal("show");
     },
+
     updateProduct() {
       const vm = this;
       let api = `${process.env.API_PATH}/api/${process.env.CUSTOM_NAME}/admin/product`;
       let httpMethod = "post";
-      
+
       if (!this.isNew) {
         //if modify
         api = `${process.env.API_PATH}/api/${process.env.CUSTOM_NAME}/admin/product/${vm.tempProduct.id}`;
@@ -333,9 +370,9 @@ export default {
       });
     },
 
-    openMessageModal(item){
-      this.tempProduct =item; 
-      this.modalMessage = '是否刪除該產品，無法回復';
+    openMessageModal(item) {
+      this.tempProduct = item;
+      this.modalMessage = "是否刪除該產品，無法回復";
       $("#messageModal").modal("show");
     },
     deleteProduct() {
@@ -345,39 +382,39 @@ export default {
       this.axios.delete(api, { data: vm.tempProduct }).then((response) => {
         console.log(response.data);
         if (response.data.success) {
-         
           vm.getProducts();
         } else {
           vm.getProducts();
-        }
-      });
-    },
-    
-    uploadFile(){
-      //console.log(this);
-      const uploadedFile = this.$refs.files.files[0]; //把檔案取出
-      const vm = this;
-      const formData = new FormData(); //建立formData的物件
-      formData.append('file-to-upload', uploadedFile);
-      const url = `${process.env.API_PATH}/api/${process.env.CUSTOM_NAME}/admin/upload`;
-      vm.status.fileUploading = true;
-      this.$http.post(url , formData , {
-        Headers: {
-          'Content-Type' : 'multipart/form-data'
-        }
-      }).then((response) => {
-        console.log(response.data);
-        vm.status.fileUploading = false;
-        if (response.data.success) {
-          // vm.tempProduct.imageUrl = response.data.imageUrl;
-          // console.log(vm.tempProduct);
-          vm.$set(vm.tempProduct , 'imageUrl',response.data.imageUrl);
-        } else {
-          this.$bus.$emit('message:push',response.data.message, 'danger');
         }
       });
     },
 
+    uploadFile() {
+      //console.log(this);
+      const uploadedFile = this.$refs.files.files[0]; //把檔案取出
+      const vm = this;
+      const formData = new FormData(); //建立formData的物件
+      formData.append("file-to-upload", uploadedFile);
+      const url = `${process.env.API_PATH}/api/${process.env.CUSTOM_NAME}/admin/upload`;
+      vm.status.fileUploading = true;
+      this.$http
+        .post(url, formData, {
+          Headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          vm.status.fileUploading = false;
+          if (response.data.success) {
+            // vm.tempProduct.imageUrl = response.data.imageUrl;
+            // console.log(vm.tempProduct);
+            vm.$set(vm.tempProduct, "imageUrl", response.data.imageUrl);
+          } else {
+            this.$bus.$emit("message:push", response.data.message, "danger");
+          }
+        });
+    },
   },
 };
 </script>
