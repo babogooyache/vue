@@ -29,12 +29,6 @@
 export default {
   name: 'Layout',
   props: ['pages'],
-  data() {
-    return {
-      msg: 'Welcome to Your Vue.js App',
-      uid: '',
-    };
-  },
   methods: {
     updatePage(page) {
       this.$emit('emitPages', page);

@@ -52,7 +52,28 @@
       </tbody>
     </table>
 
-   <Pagination :pages="pagination" @emitPages="getProducts"></Pagination>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item" :class="{'disabled': !pagination.has_pre }">
+          <a class="page-link" href="#" aria-label="Previous"
+            @click.prevent="getProducts(pagination.current_page - 1)">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+          </a>
+        </li>
+        <li class="page-item" v-for="page in pagination.total_pages" :key="page"
+          :class="{'active': pagination.current_page === page}">
+          <a class="page-link" href="#" @click.prevent="getProducts(page)">{{ page }}</a>
+        </li>
+        <li class="page-item" :class="{'disabled': !pagination.has_next }">
+          <a class="page-link" href="#" aria-label="Next"
+            @click.prevent="getProducts(pagination.current_page + 1)">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Next</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
 
     <!-- productModal -->
     <div
@@ -275,8 +296,6 @@
 
 <script>
 import $ from "jquery";
-import Pagination from '../Pagination';
-
 export default {
   data() {
     return {
@@ -291,16 +310,12 @@ export default {
       },
     };
   },
-  components: {
-    Pagination,
-  },
   created() {
     this.getProducts();
   },
   methods: {
     getProducts(page = 1) {
-      const api = `${process.env.API_PATH}/api/${process.env.CUSTOM_NAME}
-        /products?page=${page}`;
+      const api = `${process.env.API_PATH}/api/${process.env.CUSTOM_NAME}/admin/products?page=${page}`;
       const vm = this;
       vm.isLoading = true;
       this.axios.get(api).then((response) => {
@@ -321,12 +336,10 @@ export default {
       }
       $("#productModal").modal("show");
     },
-
     updateProduct() {
       const vm = this;
       let api = `${process.env.API_PATH}/api/${process.env.CUSTOM_NAME}/admin/product`;
       let httpMethod = "post";
-
       if (!this.isNew) {
         //if modify
         api = `${process.env.API_PATH}/api/${process.env.CUSTOM_NAME}/admin/product/${vm.tempProduct.id}`;
@@ -345,7 +358,6 @@ export default {
         }
       });
     },
-
     openMessageModal(item) {
       this.tempProduct = item;
       this.modalMessage = "是否刪除該產品，無法回復";
@@ -354,7 +366,6 @@ export default {
     deleteProduct() {
       const vm = this;
       let api = `${process.env.API_PATH}/api/${process.env.CUSTOM_NAME}/admin/product/${vm.tempProduct.id}`;
-
       this.axios.delete(api, { data: vm.tempProduct }).then((response) => {
         console.log(response.data);
         if (response.data.success) {
@@ -364,7 +375,6 @@ export default {
         }
       });
     },
-
     uploadFile() {
       //console.log(this);
       const uploadedFile = this.$refs.files.files[0]; //把檔案取出
