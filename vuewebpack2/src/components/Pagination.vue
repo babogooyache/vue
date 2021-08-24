@@ -27,11 +27,18 @@
 // :pages="{ 頁碼資訊 }"
 // @emitPages="更新頁面事件"
 export default {
-  name: 'Layout',
-  props: ['pages'],
+  name: 'pagination',
+  // props: ['pages'],
+  props: {                  // 從 products 傳進來的物件
+    pages: {
+      type: Object,
+    }
+  },
   methods: {
+    //使用 emit 向外傳遞目前的事件
+    //uploadPages 事件名
     updatePage(page) {
-      this.$emit('emitPages', page);
+      this.$emit('uploadPages', page);
     },
   },
 };
